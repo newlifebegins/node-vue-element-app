@@ -65,11 +65,11 @@ router.post('/register', (req, res) => {
  * @access public
  */
 router.post('/login', (req, res) => {
-    const email = req.body.email;
+    const username = req.body.username;
     const password = req.body.password;
     // 查询数据库
     User.findOne({
-        email
+        username
     }).then(user => {
         if (!user) {
             return res.status(404).json({
