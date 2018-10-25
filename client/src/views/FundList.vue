@@ -23,7 +23,7 @@
         <el-table-column prop="income" label="收入" align="center">
             <template slot-scope="scope">
                 <span style="color: #00d053">{{ scope.row.income }}</span>
-            </template> 
+            </template>
         </el-table-column>
         <el-table-column prop="expend" label="支出" align="center">
             <template slot-scope="scope">
@@ -47,7 +47,7 @@
             </template>
         </el-table-column>
     </el-table>
-    <DialogTip :dialogTip="dialogTip" @update="getProfile"></DialogTip>
+    <DialogTip :dialogTip="dialogTip" :form="form" @update="getProfile"></DialogTip>
 </div>
 </template>
 
@@ -59,7 +59,17 @@ export default {
         return {
             tableData: [],
             dialogTip: {
-                show: false
+                show: false,
+                title: '',
+                option: 'edit'
+            },
+            form: {
+                type: '',
+                description: '',
+                income: '',
+                expend: '',
+                cash: '',
+                remark: ''
             }
         }
     },
@@ -77,13 +87,64 @@ export default {
                 })
         },
         handleEdit(index, row) {
-            console.log('edit')
+            this.dialogTip = {
+                    show: true,
+                    title: '编辑内容',
+                    option: 'edit'
+                },
+                this.form = {
+                    type: row.type,
+                    description: row.description,
+                    income: row.income,
+                    expend: row.expend,
+                    cash: row.cash,
+                    remark: row.remark,
+                    id: row._id
+                }
         },
         handleDelete(index, row) {
-            console.log('delete')
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.$axios.delete(`/api/profile/delete/${row._id}`)
+                    .then(res => {
+                        if (res) {
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            this.getProfile()
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
+
         },
         handleAdd() {
-            this.dialogTip.show = true
+            this.dialogTip = {
+                    show: true,
+                    title: '添加内容',
+                    option: 'add'
+                },
+                this.form = {
+                    type: '',
+                    description: '',
+                    income: '',
+                    expend: '',
+                    cash: '',
+                    remark: '',
+                    id: ''
+                }
         }
     },
     components: {
