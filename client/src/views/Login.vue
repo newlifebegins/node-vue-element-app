@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import jwt_decode from 'jwt-decode'
 export default {
     name: 'login',
     components: {},
@@ -59,9 +60,16 @@ export default {
                                     message: '登录成功',
                                     type: 'success'
                                 })
+                                // 存储token
                                 localStorage.setItem('token', token);
-                                this.$router.push('/about')
-                            }                            
+                                // 解析token
+                                const decoded = jwt_decode(token);
+                                console.log(decoded)
+                                // token存储到vuex中
+                                this.$store.dispatch('setIsAuthorization', !this.isEmpty(decoded));
+                                this.$store.dispatch('setUser', decoded)
+                                this.$router.push('/')
+                            }
                         })
                         .catch(err => {
                             console.log(err)
@@ -72,6 +80,14 @@ export default {
                     return false;
                 }
             });
+        },
+        isEmpty(value) {
+            return (
+                value === undefined ||
+                value === null ||
+                (typeof value === "object" && Object.keys(value).length === 0) ||
+                (typeof value === "string" && value.trim().length === 0)
+            );
         }
     }
 }

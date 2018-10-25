@@ -58,8 +58,8 @@ export default {
                     },
                     {
                         min: 2,
-                        max: 5,
-                        message: '长度在 2 到 5 个字符',
+                        max: 20,
+                        message: '长度在 2 到 20 个字符',
                         trigger: 'blur'
                     }
                 ],
@@ -90,10 +90,10 @@ export default {
                 }],
             },
             options: [{
-                value: '选项1',
+                value: 'member',
                 label: '游客'
             }, {
-                value: '选项2',
+                value: 'manage',
                 label: '管理员'
             }],
             value: ''

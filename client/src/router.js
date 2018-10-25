@@ -4,6 +4,11 @@ import Home from './views/Home.vue'
 import Register from './views/Register.vue'
 import Login from './views/Login.vue'
 import Notfound from './views/404.vue'
+import UserInfo from './views/UserInfo.vue'
+import FundList from './views/FundList.vue'
+
+// 二级路由
+import Index from './views/Index.vue'
 
 Vue.use(Router)
 
@@ -14,7 +19,29 @@ const router = new Router({
         {
             path: '/',
             name: 'home',
-            component: Home
+            component: Home,
+            children: [
+                {
+                    path: '/index',
+                    name: 'index',
+                    component: Index
+                },
+                {
+                    path: '',
+                    name: 'index',
+                    component: Index
+                },
+                {
+                    path: '/userInfo',
+                    name: 'userInfo',
+                    component: UserInfo
+                },
+                {
+                    path: '/fundlist',
+                    name: 'fundList',
+                    component: FundList
+                }
+            ]
         },
         {
             path: '/about',
