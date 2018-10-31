@@ -91,10 +91,10 @@ export default {
             },
             paginations: {
                 layout: 'total, sizes, prev, pager, next, jumper',
-                total: '',
+                total: 0,
                 currentPage: 1,
                 pageSizes: [10, 20, 30, 40],
-                pageSize: ''
+                pageSize: 0
             },
             dateVal: '',
             filterTableData: []
@@ -203,7 +203,7 @@ export default {
             // 设置分页属性
             this.paginations.total = this.allTableData.length;
             this.paginations.currentPage = 1;
-            this.paginations.pageSize = 2;
+            this.paginations.pageSize = 10;
             // 设置分页数据
             this.tableData = this.allTableData.filter((item, index) => {
                 return index < this.paginations.pageSize
@@ -243,6 +243,8 @@ export default {
 <style scoped>
 .content {
     padding: 10px;
+    height: calc(100% - 60px);
+    overflow-y: auto;
 }
 .dateSelect {
     float: left;
@@ -252,5 +254,8 @@ export default {
 }
 .searchBtn {
     margin-left: 10px;
+}
+.el-pagination {
+    margin-top: 20px;
 }
 </style>

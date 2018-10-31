@@ -7,7 +7,9 @@
         <left-nav></left-nav>
         <el-container>
             <router-view></router-view>
-            <el-footer>Footer</el-footer>
+            <el-footer>
+                <footer-nav></footer-nav>
+            </el-footer>            
         </el-container>
     </el-container>
 </el-container>
@@ -17,12 +19,14 @@
 // @ is an alias to /src
 import HeaderNav from '@/components/Header.vue'
 import LeftNav from '@/components/LeftNav.vue'
+import FooterNav from '@/components/Footer.vue'
 
 export default {
     name: 'home',
     components: {
         HeaderNav,
-        LeftNav
+        LeftNav,
+        FooterNav
     }
 }
 </script>
@@ -33,7 +37,9 @@ export default {
     height: 100%;
     overflow: hidden;
 }
-
+.el-header, .el-footer {
+    background-color: #1f2532 !important;
+}
 .el-header,
 .el-footer {
     background-color: #B3C0D1;

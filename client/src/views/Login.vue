@@ -9,7 +9,7 @@
             <el-input type="password" v-model="form.password" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="submitForm('form')">登录</el-button>
+            <el-button type="primary" @click="submitForm('form')" @keyup.enter="submitForm('form')">登录</el-button>
         </el-form-item>
         <el-form-item>
             <p>没有账号 <router-link to="register">点击注册</router-link>
