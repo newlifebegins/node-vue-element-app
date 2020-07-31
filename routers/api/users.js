@@ -1,7 +1,7 @@
 // @login & @register
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt'); // 用于密码加密
+const bcrypt = require('bcryptjs'); // 用于密码加密
 const gravatar = require('gravatar'); // 全球公认头像
 const jwt = require('jsonwebtoken'); // token设置
 const passport = require('passport');
@@ -46,8 +46,8 @@ router.post('/register', (req, res) => {
                 password: req.body.password,
                 identity: req.body.identity
             })
-            bcrypt.genSalt(10, function(err, salt) {
-                bcrypt.hash(user.password, salt, function(err, hash) {
+            bcrypt.genSalt(10, function (err, salt) {
+                bcrypt.hash(user.password, salt, function (err, hash) {
                     if (err) throw err;
                     user.password = hash;
                     user.save()
@@ -79,29 +79,31 @@ router.post('/login', (req, res) => {
 
         // 密码匹配
         bcrypt.compare(password, user.password)
-              .then(isMatch => {
-                  if(isMatch) {
-                      // jwt.sign('规则', '加密名字','过期时间', '箭头函数');
-                      const rule = {
-                          id: user.id,
-                          username: user.username,
-                          avatar: user.avatar,
-                          identity: user.identity
-                      };
-                      jwt.sign(rule, keys.secretKey,{expiresIn: 3600}, (err, token) => {
-                          if(err) throw err;
-                          res.json({
-                              code: 200,
-                              token: `Bearer ${token}`,
-                              msg: '登录成功'
-                          })
-                      });
-                  } else {
-                      return res.status(400).json({
-                          msg: '密码错误！'
-                      })
-                  }
-              })
+            .then(isMatch => {
+                if (isMatch) {
+                    // jwt.sign('规则', '加密名字','过期时间', '箭头函数');
+                    const rule = {
+                        id: user.id,
+                        username: user.username,
+                        avatar: user.avatar,
+                        identity: user.identity
+                    };
+                    jwt.sign(rule, keys.secretKey, {
+                        expiresIn: 3600
+                    }, (err, token) => {
+                        if (err) throw err;
+                        res.json({
+                            code: 200,
+                            token: `Bearer ${token}`,
+                            msg: '登录成功'
+                        })
+                    });
+                } else {
+                    return res.status(400).json({
+                        msg: '密码错误！'
+                    })
+                }
+            })
     })
 })
 /**
@@ -109,7 +111,9 @@ router.post('/login', (req, res) => {
  * @desc  return current user
  * @access private
  */
-router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
+router.get('/current', passport.authenticate('jwt', {
+    session: false
+}), (req, res) => {
     res.json({
         id: req.user.id,
         username: req.user.username,
